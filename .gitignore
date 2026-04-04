@@ -25,4 +25,4 @@ data/processed/*.pkl
 
 .DS_Store
 Thumbs.db
-".claude/" 
+.claude/ 
