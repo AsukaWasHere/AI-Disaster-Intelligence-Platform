@@ -1,0 +1,27 @@
+# Python
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+
+venv/
+.env
+
+# Data
+
+data/raw/
+data/processed/*.parquet
+data/processed/*.npz
+data/processed/*.pkl
+
+# Logs
+
+*.log
+
+# OS
+
+.DS_Store
+Thumbs.db

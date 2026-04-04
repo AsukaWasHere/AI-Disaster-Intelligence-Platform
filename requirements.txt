@@ -1,0 +1,52 @@
+# ── Core ML ─────────────────────────────────────────────────────────────────
+scikit-learn==1.4.2
+xgboost==2.0.3
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.0
+imbalanced-learn==0.12.2
+
+# ── NLP ──────────────────────────────────────────────────────────────────────
+spacy==3.7.4
+sentence-transformers==2.7.0
+transformers==4.40.1
+torch==2.3.0
+tokenizers==0.19.1
+
+# ── API ───────────────────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+pydantic-settings==2.2.1
+python-multipart==0.0.9
+
+# ── Database ──────────────────────────────────────────────────────────────────
+sqlalchemy==2.0.30
+psycopg2-binary==2.9.9
+alembic==1.13.1
+
+# ── Visualization / Dashboard ─────────────────────────────────────────────────
+streamlit==1.34.0
+plotly==5.22.0
+folium==0.16.0
+streamlit-folium==0.20.0
+
+# ── Geospatial ────────────────────────────────────────────────────────────────
+geopandas==0.14.4
+shapely==2.0.4
+
+# ── Configuration & Utilities ─────────────────────────────────────────────────
+pyyaml==6.0.1
+python-dotenv==1.0.1
+joblib==1.4.2
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest==8.2.0
+pytest-asyncio==0.23.6
+httpx==0.27.0
+
+# ── Code Quality ──────────────────────────────────────────────────────────────
+black==24.4.2
+ruff==0.4.4
+mypy==1.10.0
+pre-commit==3.7.1

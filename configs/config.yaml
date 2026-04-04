@@ -1,0 +1,127 @@
+# ===============================================
+# AI Disaster Intelligence Platform — Master Config
+# ===============================================
+
+project:
+  name: "AI Disaster Intelligence Platform"
+  version: "1.0.0"
+  environment: "development"   # development | staging | production
+
+# ---- Data Paths ----
+data:
+  raw_dir: "data/raw/"
+  processed_dir: "data/processed/"
+  raw_filename: "noaa_storm_events.csv"
+  processed_filename: "noaa_features.parquet"
+  target_classification: "EVENT_TYPE"
+  target_regression: "TOTAL_DAMAGE_USD"
+  narrative_columns:
+    - "EVENT_NARRATIVE"
+    - "EPISODE_NARRATIVE"
+  geospatial_columns:
+    lat: "BEGIN_LAT"
+    lon: "BEGIN_LON"
+
+# ---- Feature Engineering ----
+features:
+  drop_columns:
+    - "EVENT_ID"
+    - "EPISODE_ID"
+  categorical_columns:
+    - "STATE"
+    - "MONTH_NAME"
+  numerical_columns:
+    - "MAGNITUDE"
+    - "DEATHS_DIRECT"
+    - "DEATHS_INDIRECT"
+    - "INJURIES_DIRECT"
+    - "INJURIES_INDIRECT"
+    - "DAMAGE_PROPERTY_USD"
+    - "DAMAGE_CROPS_USD"
+  log_transform_columns:
+    - "DAMAGE_PROPERTY_USD"
+    - "DAMAGE_CROPS_USD"
+    - "TOTAL_DAMAGE_USD"
+
+# ---- Risk Score Formula ----
+risk_score:
+  weights:
+    damage: 0.40
+    deaths: 0.35
+    injuries: 0.15
+    magnitude: 0.10
+  normalization: "minmax"
+  output_scale: 100
+
+# ---- Classification Model ----
+classification:
+  test_size: 0.20
+  random_state: 42
+  cv_folds: 5
+  metric: "f1_weighted"
+  class_weight: "balanced"
+  random_forest:
+    n_estimators: 300
+    max_depth: 15
+    min_samples_split: 5
+    min_samples_leaf: 2
+    n_jobs: -1
+  xgboost:
+    n_estimators: 400
+    max_depth: 8
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    use_label_encoder: false
+    eval_metric: "mlogloss"
+    n_jobs: -1
+
+# ---- Regression Model ----
+regression:
+  test_size: 0.20
+  random_state: 42
+  cv_folds: 5
+  metric: "neg_root_mean_squared_error"
+  linear:
+    fit_intercept: true
+  xgboost:
+    n_estimators: 500
+    max_depth: 7
+    learning_rate: 0.03
+    subsample: 0.85
+    colsample_bytree: 0.85
+
+# ---- NLP ----
+nlp:
+  spacy_model: "en_core_web_sm"
+  embedding_model: "all-MiniLM-L6-v2"
+  max_narrative_length: 512
+  top_keywords: 10
+  batch_size: 64
+
+# ---- Database ----
+database:
+  host: "localhost"        # Replace or load from .env
+  port: 5432
+  name: "disaster_db"
+  user: "postgres"
+  password: "password"
+  pool_size: 10
+  max_overflow: 20
+
+# ---- API ----
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  reload: true
+  log_level: "info"
+
+# ---- Logging ----
+logging:
+  level: "INFO"
+  format: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+  file: "logs/app.log"
+  max_bytes: 10485760
+  backup_count: 5
