@@ -1,172 +1,241 @@
-# AI Disaster Intelligence Platform
+# 🛰️ AI Disaster Intelligence Platform
 
-> A production-ready machine learning system for analyzing, predicting, and
-> visualizing natural disaster risk from the NOAA Storm Events dataset.
+An end-to-end machine learning system for real-time disaster prediction, damage estimation, and risk scoring — powered by a FastAPI backend and a React dashboard.
 
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.111-green)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+---
 
 ## Overview
 
-This platform ingests NOAA Storm Events data and delivers a unified AI pipeline
-covering disaster type classification, damage estimation, composite risk scoring,
-NLP-powered narrative insights, and interactive geospatial visualization.
+The AI Disaster Intelligence Platform ingests geospatial and environmental parameters to classify disaster types, estimate economic damage, and compute actionable risk scores. Results are surfaced through a live React dashboard with geospatial visualization and neural insight feeds.
 
-It is designed for emergency management analysts, climate researchers, and
-data engineers who need a reliable, extensible decision-support system.
+---
 
 ## Features
 
-- **Multi-class classification** — predicts disaster type (EVENT_TYPE) using
-  Random Forest and XGBoost with class-imbalance handling
-- **Damage regression** — estimates total damage in USD with log-transformed
-  XGBoost and baseline linear model
-- **Composite risk score** — weighted formula combining damage, deaths,
-  injuries, and magnitude into a 0–100 risk index
-- **NLP narrative analysis** — extracts keywords and semantic embeddings from
-  NOAA event/episode narratives using spaCy and sentence-transformers
-- **Geospatial visualization** — interactive risk heatmaps and event
-  clustering via Folium and Plotly
-- **REST API** — FastAPI backend with Pydantic validation and auto-generated
-  OpenAPI documentation
-- **Interactive dashboard** — Streamlit UI for live inference and data
-  exploration
-- **Fully containerized** — Docker + docker-compose for one-command deployment
+- 🔍 **Disaster Classification** — Multi-class prediction of disaster type (earthquake, wildfire, hurricane, flood, etc.) using Random Forest and XGBoost
+- 💰 **Damage Estimation** — Regression model to forecast economic impact in USD
+- 📊 **Risk Scoring** — Composite risk score derived from classification confidence, magnitude, and location
+- 🗺️ **Geospatial Dashboard** — Live React UI with interactive maps, layer toggles, and regional analysis
+- 🧠 **NLP Pipeline** — Keyword extraction and narrative summarization from free-text scenario descriptions
+- ⚡ **REST API** — FastAPI backend with typed schemas, modular routes, and model inference endpoints
+- 🔄 **Real-time Insights** — Aggregated event stats, average damage, and high-risk state identification
 
-## Architecture
-```
-NOAA Data → Feature Engineering → ML Models (Classification / Regression / NLP)
-         → Risk Scorer → FastAPI → Streamlit Dashboard + Folium Maps
-```
-
-See `docs/architecture.md` for the full system diagram.
+---
 
 ## Tech Stack
 
 | Layer | Technology |
 |---|---|
-| ML | scikit-learn, XGBoost, PyTorch |
-| NLP | spaCy, sentence-transformers |
-| API | FastAPI, Pydantic, Uvicorn |
-| Dashboard | Streamlit, Plotly, Folium |
-| Database | PostgreSQL, SQLAlchemy, Alembic |
-| Deployment | Docker, docker-compose |
+| **Backend API** | FastAPI, Uvicorn |
+| **ML Models** | scikit-learn, XGBoost |
+| **NLP** | Custom keyword extractor + summarizer |
+| **Data Processing** | Pandas, NumPy |
+| **Frontend** | React 18, Vite, Tailwind CSS |
+| **Config** | YAML-based config system |
+| **Serialization** | Pydantic schemas |
 
-## Setup
+---
+
+## Project Structure
+
+```
+ai-disaster-intelligence-platform/
+├── requirements.txt
+├── train_all.py                    # Unified model training entry point
+├── configs/
+│   └── config.yaml                 # Centralized config (paths, hyperparams)
+├── data/
+│   └── processed/
+│       └── feature_columns.json    # Feature schema for inference
+├── models/
+│   ├── classification/
+│   │   └── random_forest.pkl       # Trained classifier
+│   └── regression/
+│       └── xgboost_regressor.pkl   # Trained damage regressor
+├── scripts/
+│   └── train_classifier.py
+├── src/
+│   ├── api/
+│   │   ├── main.py                 # FastAPI app + CORS
+│   │   ├── schemas.py              # Pydantic request/response models
+│   │   ├── dependencies.py         # Shared DI (model loading)
+│   │   └── routes/
+│   │       ├── predict.py          # POST /predict
+│   │       ├── insights.py         # GET /insights
+│   │       └── risk.py             # Risk score logic
+│   ├── data/
+│   │   ├── data_loader.py
+│   │   ├── data_cleaning.py
+│   │   └── pipeline.py
+│   ├── features/
+│   │   └── feature_engineering.py
+│   ├── models/
+│   │   ├── classification/         # RF + XGBoost classifiers + evaluators
+│   │   ├── regression/             # Linear + XGBoost regressors + evaluators
+│   │   └── nlp/                    # Keyword extraction, summarization
+│   └── utils/
+│       ├── config.py
+│       ├── risk.py
+│       ├── logger.py
+│       ├── exceptions.py
+│       └── merge_features.py
+├── dashboard/                      # Legacy Streamlit dashboard (preserved)
+│   ├── app.py
+│   └── pages/
+└── sentinel/                       # React frontend
+    ├── index.html
+    ├── vite.config.js
+    ├── tailwind.config.js
+    └── src/
+        ├── App.jsx
+        ├── services/
+        │   └── api.js              # Centralized API layer
+        ├── components/
+        │   ├── Sidebar.jsx
+        │   ├── Topbar.jsx
+        │   ├── LoadingSpinner.jsx
+        │   └── ErrorBanner.jsx
+        └── pages/
+            ├── OverviewPage.jsx
+            ├── PredictionsPage.jsx
+            ├── GeospatialPage.jsx
+            └── InsightsPage.jsx
+```
+
+---
+
+## Installation
 
 ### Prerequisites
 
-- Python 3.11+
-- Docker and docker-compose
-- PostgreSQL 15+ (or use the bundled Docker service)
+- Python 3.9+
+- Node.js 18+
 
-### Local Development
+### Backend Setup
+
 ```bash
-# 1. Clone the repository
-git clone https://github.com/your-org/ai-disaster-intelligence.git
-cd ai-disaster-intelligence
+# Clone the repository
+git clone https://github.com/your-username/ai-disaster-intelligence-platform.git
+cd ai-disaster-intelligence-platform
 
-# 2. Create and activate a virtual environment
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
 
-# 3. Install dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# 4. Download spaCy model
-python -m spacy download en_core_web_sm
+# Train models (if not using pre-trained .pkl files)
+python train_all.py
 
-# 5. Configure environment variables
-cp .env.example .env
-# Edit .env with your DB credentials
-
-# 6. Run database migrations
-alembic upgrade head
-
-# 7. Run data pipeline
-python -m src.data.loader
-python -m src.features.builder
-
-# 8. Train models
-python -m src.models.classification.random_forest
-python -m src.models.regression.xgboost_reg
-
-# 9. Start the API
-uvicorn src.api.main:app --reload --port 8000
-
-# 10. Start the dashboard (new terminal)
-streamlit run dashboard/app.py
+# Start the API server
+uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Docker Deployment
+API will be available at `http://127.0.0.1:8000`  
+Interactive docs at `http://127.0.0.1:8000/docs`
+
+### Frontend Setup
+
 ```bash
-docker-compose up --build
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
 ```
 
-Services will be available at:
-- API: http://localhost:8000
-- API docs: http://localhost:8000/docs
-- Dashboard: http://localhost:8501
-- pgAdmin: http://localhost:5050
+Dashboard will be available at `http://localhost:5173`
+
+---
 
 ## API Reference
 
-| Endpoint | Method | Description |
-|---|---|---|
-| `/predict/type` | POST | Predict disaster event type |
-| `/predict/damage` | POST | Estimate total damage in USD |
-| `/risk/score` | POST | Compute composite risk score |
-| `/insights/narrative` | POST | Extract NLP keywords from narrative |
-| `/health` | GET | Service health check |
+### `POST /predict`
 
-Full reference: `docs/api_reference.md` or `/docs` (Swagger UI).
+Run disaster risk prediction for a given location and scenario.
 
-## Screenshots
+**Request**
 
-> _Dashboard overview — coming soon_
-
-> _Geospatial risk heatmap — coming soon_
-
-> _Classification results by event type — coming soon_
-
-## Project Structure
-```
-ai-disaster-intelligence/
-├── src/              # All application source code
-├── dashboard/        # Streamlit pages and components
-├── configs/          # YAML configuration
-├── data/             # Raw and processed datasets
-├── tests/            # Unit and integration tests
-├── deployment/       # Dockerfile and docker-compose
-└── docs/             # Architecture and API docs
+```json
+{
+  "lat": 35.6895,
+  "lon": 139.6917,
+  "month": 9,
+  "magnitude": 7.2,
+  "narrative": "Heavy rainfall preceding seismic activity in coastal zone."
+}
 ```
 
-## Running Tests
-```bash
-pytest tests/ -v --tb=short
+**Response**
+
+```json
+{
+  "event_type": "Earthquake",
+  "top_predictions": [
+    { "label": "Earthquake", "probability": 0.87 },
+    { "label": "Tsunami Inundation", "probability": 0.62 },
+    { "label": "Landslide", "probability": 0.41 }
+  ],
+  "damage_usd": 14200000000,
+  "risk_score": 88,
+  "explanation": "Seismic indicators and coastal proximity suggest high-impact primary event with secondary cascade risk.",
+  "keywords": ["seismic", "coastal", "high-magnitude", "secondary-risk"]
+}
 ```
 
-## Future Scope
+---
 
-- **Time-series forecasting** — predict disaster frequency by region using
-  LSTM or Prophet on historical monthly event counts
-- **Automated alerts** — webhook integration to notify emergency services
-  when risk score exceeds a configurable threshold
-- **Fine-tuned BERT** — domain-adapted NER on NOAA narratives for extracting
-  structured damage assertions from free text
-- **PostGIS integration** — native geospatial queries for administrative
-  boundary intersection and county-level risk aggregation
-- **MLflow experiment tracking** — log all training runs, metrics, and
-  artifacts to a centralized MLflow server
-- **CI/CD pipeline** — GitHub Actions workflow for lint, test, build, and
-  deploy on every merge to main
+### `GET /insights`
+
+Retrieve aggregated platform statistics.
+
+**Response**
+
+```json
+{
+  "total_events": 1284,
+  "avg_damage_usd": 4200000,
+  "avg_risk_score": 78.4,
+  "high_risk_states": ["California, USA", "Florida, USA", "Kanto, Japan"]
+}
+```
+
+---
+
+## Use Cases
+
+- **Emergency management agencies** — Rapid pre-event risk triage and resource allocation
+- **Insurance & reinsurance** — AI-assisted damage estimation before field assessments
+- **Infrastructure planning** — Long-term geospatial risk profiling for construction and policy
+- **Research institutions** — Reproducible ML pipeline for disaster science experiments
+- **Government dashboards** — Real-time situational awareness across regions
+
+---
+
+## Future Improvements
+
+- [ ] Real-time data ingestion from USGS, NOAA, and Copernicus APIs
+- [ ] Temporal forecasting with LSTM/Transformer models
+- [ ] User authentication and role-based access control
+- [ ] Exportable PDF incident reports from the dashboard
+- [ ] WebSocket support for live event streaming
+- [ ] Multi-language NLP pipeline for international incident narratives
+- [ ] Docker + Docker Compose for one-command deployment
+- [ ] CI/CD pipeline with automated model retraining on new data
+
+---
 
 ## License
 
-MIT License. See `LICENSE` for details.
+This project is licensed under the [MIT License](LICENSE).
 
-## Contributing
+```
+MIT License — free to use, modify, and distribute with attribution.
+```
 
-Pull requests are welcome. Please read `CONTRIBUTING.md` and ensure all tests
-pass before submitting.
+---
+
+<p align="center">Built with FastAPI · scikit-learn · XGBoost · React · Tailwind CSS</p>
