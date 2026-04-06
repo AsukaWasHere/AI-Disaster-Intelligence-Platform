@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: #080d1a;
+  color: #e2e8f0;
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0d1526;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a2d4a;
+  border-radius: 2px;
+}
+
+@layer utilities {
+  .text-scyan { color: #00e5ff; }
+  .text-spurple { color: #a855f7; }
+  .text-sgreen { color: #00ffa3; }
+  .text-sred { color: #ff4444; }
+  .bg-sbg { background-color: #080d1a; }
+  .bg-ssurface { background-color: #0d1526; }
+  .bg-scard { background-color: #111c30; }
+  .border-sborder { border-color: #1a2d4a; }
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  background: #00ffa3;
+  border-radius: 50%;
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.risk-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ff4444, #ff6b35);
+}
+
+.risk-bar-teal {
+  background: linear-gradient(90deg, #00e5ff, #00ffa3);
+}
+
+.risk-bar-purple {
+  background: linear-gradient(90deg, #a855f7, #6366f1);
+}
+
+.nav-item-active {
+  background: linear-gradient(90deg, rgba(0,229,255,0.12), transparent);
+  border-left: 2px solid #00e5ff;
+  color: #00e5ff;
+}
+
+.nav-item {
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.04);
+  color: #e2e8f0;
+}
+
+.metric-card {
+  background: #111c30;
+  border: 1px solid #1a2d4a;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+  border-color: rgba(0,229,255,0.3);
+  box-shadow: 0 0 20px rgba(0,229,255,0.05);
+}
+
+.insight-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid #1a2d4a;
+  transition: border-color 0.2s ease;
+}
+
+.insight-card:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00e5ff, #00b8d9);
+  color: #080d1a;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 24px rgba(0,229,255,0.4);
+  transform: translateY(-1px);
+}
+
+.btn-action {
+  background: rgba(168,85,247,0.15);
+  border: 1px solid rgba(168,85,247,0.3);
+  color: #a855f7;
+  transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+  background: rgba(168,85,247,0.25);
+  box-shadow: 0 0 16px rgba(168,85,247,0.2);
+}
+
+.form-input {
+  background: #0d1526;
+  border: 1px solid #1a2d4a;
+  color: #e2e8f0;
+  transition: border-color 0.2s ease;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #00e5ff;
+  box-shadow: 0 0 0 1px rgba(0,229,255,0.2);
+}
+
+.form-input::placeholder {
+  color: #374151;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.tag-coastal {
+  background: rgba(0,229,255,0.1);
+  color: #00e5ff;
+  border: 1px solid rgba(0,229,255,0.2);
+}
+
+.tag-terrain {
+  background: rgba(245,158,11,0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245,158,11,0.2);
+}
+
+.tag-infra {
+  background: rgba(239,68,68,0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.tag-high {
+  background: rgba(239,68,68,0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.map-overlay {
+  background: radial-gradient(ellipse at center, rgba(255,107,53,0.15) 0%, rgba(8,13,26,0.8) 70%);
+}
+
+.geo-stat-card {
+  background: rgba(8,13,26,0.85);
+  border: 1px solid #1a2d4a;
+  backdrop-filter: blur(8px);
+}
+
+.toggle-on {
+  background: #00e5ff;
+}
+
+.toggle-off {
+  background: #374151;
+}
+
+.toggle-purple {
+  background: #a855f7;
+}
+
+.probability-bar {
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+
+.probability-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #00e5ff, #00ffa3);
+}
+
+.probability-fill-purple {
+  background: linear-gradient(90deg, #a855f7, #6366f1);
+}
+
+.probability-fill-orange {
+  background: linear-gradient(90deg, #f59e0b, #ff6b35);
+}
+
+.floating-badge {
+  background: rgba(168,85,247,0.9);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(168,85,247,0.4);
+}
