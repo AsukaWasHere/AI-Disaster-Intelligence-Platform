@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Sidebar from './components/Sidebar'
 import Topbar from './components/Topbar'
 import OverviewPage from './pages/OverviewPage'
 import PredictionsPage from './pages/PredictionsPage'
 import GeospatialPage from './pages/GeospatialPage'
 import InsightsPage from './pages/InsightsPage'
+import LoginPage from './pages/LoginPage'
+import { useAuth } from './hooks/useAuth'
 
 export default function App() {
   const [activePage, setActivePage] = useState('overview')
+  const { user } = useAuth()
+
+  // If there is no user in memory, stop here and show the Login Page instead
+  if (!user) {
+    return <LoginPage />
+  }
 
   const pageMap = {
     overview: <OverviewPage />,
